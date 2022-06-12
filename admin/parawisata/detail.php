@@ -67,6 +67,7 @@ html body {
                 <h5 class="card-title"><?php echo $result['nama_parawisata']; ?></h5>
                 <h5 class="card-title"><?php echo $result['tempat_parawisata']; ?></h5>
                 <p class="card-text"><?php echo $result['tentang']; ?></p>
+                <p class="card-text">Rp. <?php echo number_format($result['harga']) ?></p>
                 <a href="../dashboard.php" class="btn btn-success btn-sm">Back to Dassboard</a>
             </div>
         </div>

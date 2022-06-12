@@ -72,6 +72,10 @@ html body {
                 <div class="mb-3">
                 <input type="file" class="form-control" name="gambar" id="gambar">
                 </div>
+
+                <div class="mb-3">
+                    <input type="number" class="form-control" name="harga" placeholder="Harga...." autofocus id="harga">
+                </div>
                 
                 <div class="mb-3">
                     <button type="submit" class="btn btn-success w-100" id="registrasi" name="submit">SUBMIT</button>
@@ -89,6 +93,7 @@ html body {
 						$nama_parawisata 	= $_POST['nama_parawisata'];
 						$tempat_parawisata 		= $_POST['tempat_parawisata'];
 						$tentang 		= $_POST['tentang'];
+                        $harga          = $_POST['harga'];
 
 						// menampung data file yang diupload
 						$filename = $_FILES['gambar']['name'];
@@ -112,7 +117,7 @@ html body {
 							// proses upload file sekaligus insert ke databse
 							move_uploaded_file($tmp_name, './img/'.$newname);
 
-							$insert = mysqli_query($conn, "INSERT INTO tb_parawisata VALUES('', '$nama_parawisata', '$tempat_parawisata', '$tentang', '$newname')");
+							$insert = mysqli_query($conn, "INSERT INTO tb_parawisata VALUES('', '$nama_parawisata', '$tempat_parawisata', '$tentang', '$newname', '$harga')");
 
 							if($insert){
 								echo '<script>alert("Tambah data berhasil")</script>';

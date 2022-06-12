@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 01, 2022 at 11:51 AM
+-- Generation Time: Jun 12, 2022 at 08:12 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -40,7 +40,7 @@ CREATE TABLE `tb_admin` (
 --
 
 INSERT INTO `tb_admin` (`id_admin`, `username`, `alamat`, `no_handphone`, `password`) VALUES
-(2, 'Panglima', 'Makassar', '085393232854', '074febdcdd2becc807a845092867ce2e');
+(4, 'Admin', 'Makassar', '08654365465', '5f4dcc3b5aa765d61d8327deb882cf99');
 
 -- --------------------------------------------------------
 
@@ -72,16 +72,17 @@ CREATE TABLE `tb_parawisata` (
   `nama_parawisata` varchar(100) NOT NULL,
   `tempat_parawisata` varchar(200) NOT NULL,
   `tentang` text NOT NULL,
-  `gambar` varchar(100) NOT NULL
+  `gambar` varchar(100) NOT NULL,
+  `harga` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tb_parawisata`
 --
 
-INSERT INTO `tb_parawisata` (`id_parawisata`, `nama_parawisata`, `tempat_parawisata`, `tentang`, `gambar`) VALUES
-(8, 'Central Point of Indonesia (CPI)', 'Kota Makassar', 'Pembangunan proyek Central Point of Indonesia (CPI) dilihat dari Pantai Losari, Makassar, Selasa, 20 Oktober 2015. Kawasan dengan luas total 600 hektar ini direncanakan akan dibangun pusat bisnis dan pemerintahan, kawasan hiburan, hotel hotel kelas dunia yang dilengkapi dengan lapangan golf dengan view ke laut lepas. TEMPO/Iqbal Lubis', 'produk1654023914.jpg'),
-(9, 'Permandian Topejawa', 'Kabupaten Takalar', 'Liburan bersama keluarga memang yang paling menyenangkan. Mengunjungi suatu destinasi dengan melakukan banyak aktivitas pasti akan membuat momen berharga tak terlupakan. Sulawesi Selatan miliki destinasi wisata yang sangat cocok untuk menghabiskan waktu liburan bersama keluarga yakni Pantai Topejawa Takalar. Biasanya pada weekend dan libur panjang, pantai yang dikombinasikan dengan wisata modern ini penuh sesak oleh wisatawan lokal maupun dari luar daerah.\r\n\r\nTidak hanya memiliki panorama pantai yang menawan, di Topejawa Takalar juga ada beach waterboom yang dibuat menghadap ke pantai. Anda pun bisa berenang sambil memanjakan mata dengan birunya lautan. Bahkan ada pula seluncuran besar yang semakin menambah asyik aktivitas berenang bersama keluarga atau orang terdekat. Nah, bagi Anda yang belum memiliki rencana liburan bisa simak ulasan berikut untuk jadi inspirasi.', 'produk1654024441.png');
+INSERT INTO `tb_parawisata` (`id_parawisata`, `nama_parawisata`, `tempat_parawisata`, `tentang`, `gambar`, `harga`) VALUES
+(8, 'Central Point of Indonesia (CPI)', 'Kota Makassar', 'Pembangunan proyek Central Point of Indonesia (CPI) dilihat dari Pantai Losari, Makassar, Selasa, 20 Oktober 2015. Kawasan dengan luas total 600 hektar ini direncanakan akan dibangun pusat bisnis dan pemerintahan, kawasan hiburan, hotel hotel kelas dunia yang dilengkapi dengan lapangan golf dengan view ke laut lepas. TEMPO/Iqbal Lubis', 'produk1654023914.jpg', '250000'),
+(9, 'Permandian Topejawa', 'Kabupaten Takalar', 'Liburan bersama keluarga memang yang paling menyenangkan. Mengunjungi suatu destinasi dengan melakukan banyak aktivitas pasti akan membuat momen berharga tak terlupakan. Sulawesi Selatan miliki destinasi wisata yang sangat cocok untuk menghabiskan waktu liburan bersama keluarga yakni Pantai Topejawa Takalar. Biasanya pada weekend dan libur panjang, pantai yang dikombinasikan dengan wisata modern ini penuh sesak oleh wisatawan lokal maupun dari luar daerah.\r\n\r\nTidak hanya memiliki panorama pantai yang menawan, di Topejawa Takalar juga ada beach waterboom yang dibuat menghadap ke pantai. Anda pun bisa berenang sambil memanjakan mata dengan birunya lautan. Bahkan ada pula seluncuran besar yang semakin menambah asyik aktivitas berenang bersama keluarga atau orang terdekat. Nah, bagi Anda yang belum memiliki rencana liburan bisa simak ulasan berikut untuk jadi inspirasi.', 'produk1654024441.png', '200000');
 
 -- --------------------------------------------------------
 
@@ -101,6 +102,51 @@ CREATE TABLE `tb_penilaian` (
 
 INSERT INTO `tb_penilaian` (`id_penilaian`, `id_parawisata`, `nilai`) VALUES
 (3, 9, '90');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tb_pesanan`
+--
+
+CREATE TABLE `tb_pesanan` (
+  `id_pesanan` int(11) NOT NULL,
+  `id_parawisata` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `jumlah_pesan` int(20) NOT NULL,
+  `tanggal_pesanan` date NOT NULL,
+  `total_harga` int(20) NOT NULL,
+  `status` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tb_pesanan`
+--
+
+INSERT INTO `tb_pesanan` (`id_pesanan`, `id_parawisata`, `id_user`, `jumlah_pesan`, `tanggal_pesanan`, `total_harga`, `status`) VALUES
+(6, 8, 1, 3, '2022-06-13', 750000, '1'),
+(7, 9, 1, 1, '2022-06-13', 200000, '0');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tb_user`
+--
+
+CREATE TABLE `tb_user` (
+  `id_user` int(11) NOT NULL,
+  `username` varchar(100) NOT NULL,
+  `alamat` varchar(100) NOT NULL,
+  `no_handphone` varchar(100) NOT NULL,
+  `password` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tb_user`
+--
+
+INSERT INTO `tb_user` (`id_user`, `username`, `alamat`, `no_handphone`, `password`) VALUES
+(1, 'Panglima', 'Makassar', '085444343987', 'panglima');
 
 --
 -- Indexes for dumped tables
@@ -133,6 +179,20 @@ ALTER TABLE `tb_penilaian`
   ADD KEY `id_parawisata` (`id_parawisata`);
 
 --
+-- Indexes for table `tb_pesanan`
+--
+ALTER TABLE `tb_pesanan`
+  ADD PRIMARY KEY (`id_pesanan`),
+  ADD KEY `id_parawisata` (`id_parawisata`),
+  ADD KEY `id_user` (`id_user`);
+
+--
+-- Indexes for table `tb_user`
+--
+ALTER TABLE `tb_user`
+  ADD PRIMARY KEY (`id_user`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -140,7 +200,7 @@ ALTER TABLE `tb_penilaian`
 -- AUTO_INCREMENT for table `tb_admin`
 --
 ALTER TABLE `tb_admin`
-  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tb_coment`
@@ -161,6 +221,18 @@ ALTER TABLE `tb_penilaian`
   MODIFY `id_penilaian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `tb_pesanan`
+--
+ALTER TABLE `tb_pesanan`
+  MODIFY `id_pesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `tb_user`
+--
+ALTER TABLE `tb_user`
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- Constraints for dumped tables
 --
 
@@ -175,6 +247,13 @@ ALTER TABLE `tb_coment`
 --
 ALTER TABLE `tb_penilaian`
   ADD CONSTRAINT `tb_penilaian_ibfk_1` FOREIGN KEY (`id_parawisata`) REFERENCES `tb_parawisata` (`id_parawisata`);
+
+--
+-- Constraints for table `tb_pesanan`
+--
+ALTER TABLE `tb_pesanan`
+  ADD CONSTRAINT `tb_pesanan_ibfk_1` FOREIGN KEY (`id_parawisata`) REFERENCES `tb_parawisata` (`id_parawisata`),
+  ADD CONSTRAINT `tb_pesanan_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `tb_user` (`id_user`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

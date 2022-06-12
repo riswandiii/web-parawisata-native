@@ -9,6 +9,10 @@ if(!isset($_SESSION['login']))
     exit;
 }
 
+$id_user = $_SESSION['id_user'];
+$user = mysqli_query($conn, "SELECT * FROM tb_user WHERE id_user = '$id_user' ");
+$usr = mysqli_fetch_array($user);
+
 ?>
 
 <!doctype html>
@@ -16,7 +20,7 @@ if(!isset($_SESSION['login']))
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>PARAWISATA || HOME</title>
+    <title>Profil <?php echo $usr['username'] ?></title>
 
     <!-- Icons Bootsrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
@@ -41,10 +45,10 @@ if(!isset($_SESSION['login']))
             <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                <a class="nav-link active" aria-current="page" href="index.php">Home</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="#">Parawisata</a>
+                <a class="nav-link" href="index.php">Parawisata</a>
                 </li>
                 <li class="nav-item">
                 <a class="nav-link" href="#">Komentar</a>
@@ -90,57 +94,49 @@ if(!isset($_SESSION['login']))
   <div class="container-fluid" id="container-fluid">
 
       <div class="container mt-5">
-        <br>
-      <div class="row text-white text-center">
-          <div class="col-lg-12 py-5">
-              <h3>~Welcome To Website~</h3>
-          </div>
-      </div>
-      <div class="row text-white text-center">
-          <div class="col-lg-8 offset-lg-2">
-                <h1>SISTEM INFORMASI PARAWISATA SULAWESI SELATAN</h1>
-          </div>
-      </div>
-      <hr>
-      </div>
 
-      <div class="container p-3">
-            <div class="row text-white text-center mb-3">
-                <div class="col-lg-12">
-                    <h3>Parawisata Di Sarankan</h3>
-                </div>
-            </div>
-            <div class="row mb-2">
-            <?php 
-							$no = 1;
-							$parawisata = mysqli_query($conn, "SELECT * FROM tb_parawisata
-                            ");
-							if(mysqli_num_rows($parawisata) > 0){
-							while($row = mysqli_fetch_array($parawisata)){
-				?>
-                <div class="col-lg-6">
-                <div class="card mb-3">
-                <img src="admin/parawisata/img/<?php echo $row['gambar'] ?>" class="card-img-top" alt="..." height="300">
-                <div class="card-body">
-                    <h5 class="card-title"><?php echo $row['nama_parawisata'] ?></h5>
-                    <p class="card-text"><?php echo $row['tempat_parawisata'] ?></p>
-                    <p class="card-text"><?php echo $row['tentang'] ?></p>
-                    <p class="card-text"><strong>Harga : </strong> Rp. <?php echo number_format($row['harga']) ?></p>
-                    <div class="py-3">
-                        <a href="pesanan/pesanan.php?id_parawisata=<?php echo $row['id_parawisata'] ?>" class="btn btn-success">Pesan</a>
+      <div class="row text-dark text-center mt-5">
+          <div class="col-lg-6 offset-lg-3 py-5">
+            <br><br><br><br><br>
+                <!-- Profil User -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>My Profil <?php echo $usr['username'] ?></h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td>Username</td>
+                                            <td>:</td>
+                                            <td><?php echo $usr['username'] ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Alamat</td>
+                                            <td>:</td>
+                                            <td><?php echo $usr['alamat'] ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>No. Handphone</td>
+                                            <td>:</td>
+                                            <td><?php echo $usr['no_handphone'] ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Password</td>
+                                            <td>:</td>
+                                            <td><?php echo $usr['password'] ?></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                </div>
-                </div>
-                <?php }}else{ ?>
-							<tr>
-								<td colspan="8" class="text-danger">Tidak ada data</td>
-							</tr>
-
-				<?php } ?>
-            </div>
-           
-      </div><br><br>
+                <!-- End Profil -->
+          </div>
+      </div>
+      </div>
+      <br><br><br><br><br>
 
   </div>
 

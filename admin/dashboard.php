@@ -2,6 +2,7 @@
 
 //cek jika belom login
 session_start();
+include '../koneksi.php';
 if(!isset($_SESSION['login']))
 {
     header("Location: ../login.php");
@@ -67,6 +68,18 @@ if(!isset($_SESSION['login']))
           <a class="nav-link" href="penilaian/penilaian.php">
               <span data-feather="file"></span>
               Data Penilaian
+            </a>
+          </li>
+          <li class="nav-item">
+          <a class="nav-link" href="pesanan/pesanan.php">
+              <span data-feather="file"></span>
+              Data Transaksi
+            </a>
+          </li>
+          <li class="nav-item">
+          <a class="nav-link" href="profil.php?id_admin=<?php echo $_SESSION['id_admin'] ?>">
+              <span data-feather="file"></span>
+              Profil Admin
             </a>
           </li>
           <li class="nav-item">

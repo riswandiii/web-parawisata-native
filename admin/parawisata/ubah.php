@@ -85,6 +85,11 @@ html body {
                     <button type="submit" class="btn btn-success w-100" id="registrasi" name="submit">SUBMIT</button>
                 </div>
 
+                
+                <div class="mb-3">
+                    <input type="number" class="form-control" name="harga" placeholder="Harga....." autofocus id="harga" value="<?php echo $p->harga ?>">
+                </div>
+
             </form>
             <!-- {{-- End Form --}} -->
 
@@ -97,6 +102,7 @@ html body {
 						$tempat_parawisata 		= $_POST['tempat_parawisata'];
 						$tentang 	= $_POST['tentang'];
 						$foto 		= $_POST['foto'];
+						$harga 		= $_POST['harga'];
 
 						// data gambar yang baru
 						$filename = $_FILES['gambar']['name'];
@@ -135,7 +141,8 @@ html body {
 												nama_parawisata = '".$nama_parawisata."',
 												tempat_parawisata = '".$tempat_parawisata."',
 												tentang = '".$tentang."',
-												gambar = '".$namagambar."'
+												gambar = '".$namagambar."',
+                                                harga = '".$harga."'
 												WHERE id_parawisata = '".$p->id_parawisata."' ");
 
 						if($update){

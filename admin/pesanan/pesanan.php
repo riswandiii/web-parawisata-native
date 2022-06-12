@@ -16,7 +16,7 @@ if(!isset($_SESSION['login']))
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>DATA PARAWISATA</title>
+    <title>DATA TRANSAKSI</title>
 
     <!-- Link Icons Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
@@ -55,54 +55,63 @@ html body {
     <div class="container">
 
     <div class="row text-white text-center">
-        <div class="col-lg-12 mt-5">
-            <h3>Data Tabel Parawisata</h3>
-        </div>
-    </div>
-
-    <div class="row py-3">
-        <div class="col-lg-12">
-            <a href="tambah.php" class="btn btn-primary btn-sm">Tambah Data Parawisata</a>
+        <div class="col-lg-12 mt-5 mb-3">
+            <h3>Data Tabel Transaksi</h3>
         </div>
     </div>
 
     <div class="row">
         <div class="col-lg-12">
             <div class="table-responisve">
-                <table class="table table-sm table-striped text-white">
+                <table class="table table-sm table-striped text-white table-bordered">
                     <thead>
                         <tr data-aos="fade-right" data-aos-duration="2000">
                             <th>No</th>
-                            <th>Nama Parawisata</th>
-                            <th>Tempat Parawisata</th>
-                            <th>Gambar Parawisata</th>
+                            <th>Parawisata</th>
+                            <th>Gambar</th>
                             <th>Harga</th>
+                            <th>Pemesana</th>
+                            <th>alamat</th>
+                            <th>No_handphone</th>
+                            <th>Tanggal</th>
+                            <th>Total Harga</th>
+                            <th>status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                     <?php 
 							$no = 1;
-							$parawisata = mysqli_query($conn, "SELECT * FROM tb_parawisata");
-							if(mysqli_num_rows($parawisata) > 0){
-							while($row = mysqli_fetch_array($parawisata)){
+							$pesanan = mysqli_query($conn, "SELECT * FROM tb_pesanan
+                            LEFT JOIN tb_parawisata ON tb_pesanan.id_parawisata = tb_parawisata.id_parawisata
+                            LEFT JOIN tb_user ON tb_pesanan.id_user = tb_user.id_user
+                            ");
+							if(mysqli_num_rows($pesanan) > 0){
+							while($row = mysqli_fetch_array($pesanan)){
 						?>
 						<tr>
 							<td class="text-white"><?php echo $no++ ?></td>
 							<td class="text-white"><?php echo $row['nama_parawisata'] ?></td>
-							<td class="text-white"><?php echo $row['tempat_parawisata'] ?></td>
-							<td class="text-white"><a href="img/<?php echo $row['gambar'] ?>" target="_blank"> <img src="img/<?php echo $row['gambar'] ?>" width="200"> </a></td>
+							<td class="text-white"><a href="../parawisata/img/<?php echo $row['gambar']?>" target="_blank"> <img src="../parawisata/img/<?php echo $row['gambar'] ?>" width="100"></a></td>
                             <td class="text-white">Rp. <?php echo number_format($row['harga']) ?></td>
+                            <td class="text-white"><?php echo $row['username'] ?></td>
+                            <td class="text-white"><?php echo $row['alamat'] ?></td>
+                            <td class="text-white"><?php echo $row['no_handphone'] ?></td>
+                            <td class="text-white"><?php echo $row['tanggal_pesanan'] ?></td>
+                            <td class="text-white">Rp. <?php echo number_format($row['total_harga']) ?></td>
+                            <?php if($row['status'] == '0') { ?>
+                            <td class="text-danger">Pesanan Belom Di CheckOut!</td>
+                            <?php }else{ ?>
+                            <td class="text-success">Pesanan Sudah Di CheckOut!</td>
+                            <?php } ?>
 							<td class="text-white">
-								<a href="ubah.php?id_parawisata=<?php echo $row['id_parawisata']?>" class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i></a>
-                                <a href="hapus.php?id_parawisata=<?php echo $row['id_parawisata']?>" onclick="return confirm('Yakin ingin hapus')" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></a>
-                                <a href="detail.php?id_parawisata=<?php echo $row['id_parawisata']?>" class="btn btn-info btn-sm"><i class="bi bi-eye-fill"></i></a>
+                                <a href="detail.php?id_parawisata=<?php echo $row['id_parawisata']?>" class="btn btn-danger btn-sm">Delete</a>
                                 
 							</td>
 						</tr>
 						<?php }}else{ ?>
 							<tr>
-								<td colspan="8">Tidak ada data</td>
+								<td colspan="11" class="text-danger">Tidak ada data Pesanan</td>
 							</tr>
 
 						<?php } ?>
