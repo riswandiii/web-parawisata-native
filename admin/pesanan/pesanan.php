@@ -105,7 +105,7 @@ html body {
                             <td class="text-success">Pesanan Sudah Di CheckOut!</td>
                             <?php } ?>
 							<td class="text-white">
-                                <a href="detail.php?id_parawisata=<?php echo $row['id_parawisata']?>" class="btn btn-danger btn-sm">Delete</a>
+                                <a href="hapus.php?id_pesanan=<?php echo $row['id_pesanan']?>" class="btn btn-danger btn-sm" onclick="return confirm('YAKIN INGIN HAPUS DATA PESANAN?')">Delete</a>
                                 
 							</td>
 						</tr>

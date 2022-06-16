@@ -9,6 +9,30 @@ if(!isset($_SESSION['login']))
     exit;
 }
 
+
+// Proses kkomentar
+if(isset($_POST['komentar'])){
+    include 'koneksi.php';
+    $id_parawisata 		= $_POST['id_parawisata'];
+    $coment 		= $_POST['coment'];
+
+    $insert = mysqli_query($conn, "INSERT INTO tb_coment VALUES (
+        '',
+        '".$id_parawisata."',
+        '".$coment."'
+            )");
+
+
+        if($insert){
+            echo '<script>alert("Komentar Anda Berhasil Di Tambahkan!!")</script>';
+            echo '<script>window.location="komentar.php"</script>';
+        }else{
+            echo 'Gagal'.mysqli_error($conn);
+        }
+}
+// End proses komentar
+
+
 ?>
 
 <!doctype html>
@@ -41,16 +65,16 @@ if(!isset($_SESSION['login']))
             <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                <a class="nav-link active" aria-current="page" href="">Home</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="#">Parawisata</a>
+                <a class="nav-link" href="index">Parawisata</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="#">Komentar</a>
+                <a class="nav-link" href="komentar.php">Komentar</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="#">Penilaian Parawisata</a>
+                <a class="nav-link" href="penilaian.php">Penilaian Parawisata</a>
                 </li>
                 
                 <?php
@@ -126,8 +150,22 @@ if(!isset($_SESSION['login']))
                     <p class="card-text"><?php echo $row['tempat_parawisata'] ?></p>
                     <p class="card-text"><?php echo $row['tentang'] ?></p>
                     <p class="card-text"><strong>Harga : </strong> Rp. <?php echo number_format($row['harga']) ?></p>
-                    <div class="py-3">
+                    <div class="py-1">
                         <a href="pesanan/pesanan.php?id_parawisata=<?php echo $row['id_parawisata'] ?>" class="btn btn-success">Pesan</a>
+                    </div>
+                    <div>
+                        <!-- Form Komentar -->
+                        <form action="" method="post">
+                        <div class="mb-3">
+                        <input type="hidden" name="id_parawisata" value="<?php echo $row['id_parawisata'] ?>">
+                            <label for="coment" class="form-label">Komentar</label>
+                            <textarea class="form-control" id="coment" rows="3" name="coment"></textarea>
+                        </div>
+                        <div>
+                            <button class="btn btn-success btn-sm" type="submit" name="komentar">Kirim Komentar</button>
+                        </div>
+                        </form>
+                        <!-- End Form -->
                     </div>
                 </div>
                 </div>
