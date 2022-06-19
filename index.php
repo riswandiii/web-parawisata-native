@@ -25,12 +25,34 @@ if(isset($_POST['komentar'])){
 
         if($insert){
             echo '<script>alert("Komentar Anda Berhasil Di Tambahkan!!")</script>';
-            echo '<script>window.location="komentar.php"</script>';
+            echo '<script>window.location=""</script>';
         }else{
             echo 'Gagal'.mysqli_error($conn);
         }
 }
 // End proses komentar
+
+
+// Proses Penilaian
+if(isset($_POST['penilaian'])){
+    $id_parawisata 		= $_POST['id_parawisata'];
+    $nilai 		= $_POST['nilai'];
+
+    $insert = mysqli_query($conn, "INSERT INTO tb_penilaian VALUES (
+        '',
+        '".$id_parawisata."',
+        '".$nilai."'
+            )");
+
+
+        if($insert){
+            echo '<script>alert("Penilaian Anda Berhasil Di Tambahkan!!")</script>';
+            echo '<script>window.location=""</script>';
+        }else{
+            echo 'Gagal'.mysqli_error($conn);
+        }
+}
+// End proses penilaian
 
 
 ?>
@@ -68,13 +90,7 @@ if(isset($_POST['komentar'])){
                 <a class="nav-link active" aria-current="page" href="">Home</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="index">Parawisata</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="komentar.php">Komentar</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="penilaian.php">Penilaian Parawisata</a>
+                <a class="nav-link" href="index.php">Parawisata</a>
                 </li>
                 
                 <?php
@@ -142,7 +158,7 @@ if(isset($_POST['komentar'])){
 							if(mysqli_num_rows($parawisata) > 0){
 							while($row = mysqli_fetch_array($parawisata)){
 				?>
-                <div class="col-lg-6">
+                <div class="col-lg-12">
                 <div class="card mb-3">
                 <img src="admin/parawisata/img/<?php echo $row['gambar'] ?>" class="card-img-top" alt="..." height="300">
                 <div class="card-body">
@@ -151,18 +167,70 @@ if(isset($_POST['komentar'])){
                     <p class="card-text"><?php echo $row['tentang'] ?></p>
                     <p class="card-text"><strong>Harga : </strong> Rp. <?php echo number_format($row['harga']) ?></p>
                     <div class="py-1">
-                        <a href="pesanan/pesanan.php?id_parawisata=<?php echo $row['id_parawisata'] ?>" class="btn btn-success">Pesan</a>
+                        <a href="pesanan/pesanan.php?id_parawisata=<?php echo $row['id_parawisata'] ?>" class="btn btn-success">Pesan Sekarang</a>
                     </div>
-                    <div>
+                    <hr>
+                    <h5>Komentar dan Penilain User </h5>
+
+                    <!-- Komentar -->
+                    <?php 
+							$no = 1;
+							$koment = mysqli_query($conn, "SELECT * FROM tb_coment
+                                                        INNER JOIN tb_parawisata ON tb_coment.id_parawisata = tb_parawisata.id_parawisata 
+                                                        ");
+							if(mysqli_num_rows($koment) > 0){
+							while($com = mysqli_fetch_array($koment)){
+						?>
+                        <?php if($com['id_parawisata'] != $row['id_parawisata']) {?>
+                        <?php }else{ ?>
+                            <strong><small class="d-block"><?php echo $com['coment'] ?></small class="d-block"></strong>
+                        <?php } ?>
+						<?php }}else{ ?>
+						<?php } ?><br>
+                    <!-- End Komentar -->
+
+                     <!-- Penilain -->
+                     <?php 
+							$no = 1;
+							$nilai = mysqli_query($conn, "SELECT * FROM tb_penilaian
+                                                        INNER JOIN tb_parawisata ON tb_penilaian.id_parawisata = tb_parawisata.id_parawisata 
+                                                        ");
+							if(mysqli_num_rows($nilai) > 0){
+							while($nil = mysqli_fetch_array($nilai)){
+						?>
+                        <?php if($nil['id_parawisata'] != $row['id_parawisata']) {?>
+                        <?php }else{ ?>
+                            <strong><small class="d-block"><?php echo $nil['nilai'] ?></small class="d-block"></strong>
+                        <?php } ?>
+						<?php }}else{ ?>
+						<?php } ?>
+                        <hr>
+                    <!-- End Penilain -->
+
+                    <div class="col-lg-6 offset-lg-6">
                         <!-- Form Komentar -->
                         <form action="" method="post">
-                        <div class="mb-3">
+                        <div class="mb-2">
                         <input type="hidden" name="id_parawisata" value="<?php echo $row['id_parawisata'] ?>">
-                            <label for="coment" class="form-label">Komentar</label>
+                            <label for="coment" class="form-label"> Form Komentar</label>
                             <textarea class="form-control" id="coment" rows="3" name="coment"></textarea>
                         </div>
                         <div>
                             <button class="btn btn-success btn-sm" type="submit" name="komentar">Kirim Komentar</button>
+                        </div>
+                        </form>
+                        <br>
+                        <!-- End Form -->
+                    </div>
+                    <div class="col-lg-6 offset-lg-6">
+                        <!-- Form penilain -->
+                        <form action="" method="post">
+                        <div class="mb-3">
+                        <input type="hidden" name="id_parawisata" value="<?php echo $row['id_parawisata'] ?>">
+                        <label for="nilai" class="form-label"> Form Penilain</label>
+                        <input type="number" name="nilai" class="form-control" id="nilai" required>
+                        <div class="mt-2">
+                            <button class="btn btn-success btn-sm" type="submit" name="penilaian">Kirim Penilaian</button>
                         </div>
                         </form>
                         <!-- End Form -->

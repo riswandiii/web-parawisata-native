@@ -44,12 +44,6 @@ $usr = mysqli_fetch_array($user);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>History Pemesanan <?php echo $usr['username'] ?></title>
 
-    <style>
-        #container-fluid{
-            height: 650px;
-        }
-    </style>
-
     <!-- Icons Bootsrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
 
@@ -77,12 +71,6 @@ $usr = mysqli_fetch_array($user);
                 </li>
                 <li class="nav-item">
                 <a class="nav-link" href="../index.php">Parawisata</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="../komentar.php">Komentar</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="../penilain.php">Penilaian Parawisata</a>
                 </li>
                 
                 <?php
@@ -130,70 +118,65 @@ $usr = mysqli_fetch_array($user);
             </div>
 
             <div class="row mb-2">
-                <div class="col-lg-12">
-                    <div class="table-responsive">  
-                        <table class="table table-sm table-light table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Parawisata</th>
-                                    <th>Gambar</th>
-                                    <th>Harga</th>
-                                    <th>Jumlah</th>
-                                    <th>Tanggal</th>
-                                    <th>Total Harga</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                        <tbody>
                             <?php 
                             $id_user = $_SESSION['id_user'];
 							$hstory = mysqli_query($conn, "SELECT * FROM tb_pesanan
                             LEFT JOIN tb_parawisata ON tb_pesanan.id_parawisata = tb_parawisata.id_parawisata
                             WHERE id_user  = '$id_user'
                             ");
-                            $no = 1;
 							if(mysqli_num_rows($hstory) > 0){
 							while($his = mysqli_fetch_array($hstory)){
 				            ?>
-                            <tr>
-                                <td><?php echo $no++ ?></td>
-                                <td><?php echo $his['nama_parawisata'] ?></td>
-                                <td><img src="../admin/parawisata/img/<?php echo $his['gambar'] ?>" alt="" width="100"></td>
-                                <td>Rp. <?php echo number_format($his['harga']) ?></td>
-                                <td><?php echo $his['jumlah_pesan'] ?></td>
-                                <td><?php echo $his['tanggal_pesanan'] ?></td>
-                                <td>Rp. <?php echo number_format($his['total_harga']) ?></td>
-                                <?php if($his['status'] == '0') {?>
-                                <td class="text-danger">Pesanan Belom Di Checkout!</td>
-                                <?php }else{?>
-                               <strong><td class="text-success">Pesanan Sudah Di Checkout!</td></strong>
-                                <?php }?>
-                                <?php if($his['status'] == '0') {?>
-                                <td>
-                                    <!-- Form CheckOut -->
+                                    <div class="col-lg-12 mb-3">
+                                    <div class="card p-5">
+                                    <img src="../admin/parawisata/img/<?php echo $his['gambar'] ?>" alt="" height="200">
+                                    <small class="d-block"><?php echo $his['nama_parawisata'] ?></small>
+                                    <small class="d-block">Harga : Rp. <?php echo number_format($his['harga']) ?></small>
+                                    <small class="d-block">Jumlah Pesan : <?php echo $his['jumlah_pesan'] ?></small>
+                                    <small class="d-block"> Tanggal Pesanan : <?php echo $his['tanggal_pesanan'] ?></small>
+                                    <small class="d-block mb-2">Total Harga : Rp. <?php echo number_format($his['total_harga']) ?></small>
+                                    <strong class="d-block"><p>Keterangan : </p></strong>
+                                    <?php if($his['status'] == '0') {?>
+                                    <strong><p class="text-danger d-block">Pesanan Belom Di Checkout!</p></strong>
+                                    <?php }else{?>
+                                   <strong><p class="text-success d-block">Pesanan Sudah Di Checkout!</p></strong>
+                                    <?php }?>
+                                    <?php if($his['status'] == '0') {?>
+                                         <!-- Form CheckOut -->
                                     <form action="" method="post">
                                         <input type="hidden" name="id_pesanan" value="<?php echo $his['id_pesanan'] ?>">
                                         <input type="hidden" name="status" value="1">
                                         <button type="submit" name="submit" class="btn btn-success" onclick="return confirm('YAKIN INGIN CHECKOUT?')">CHECKOUT</button>
                                     </form>
+                                    <hr>
+                                    <br><br><br>
                                     <!-- End Form -->
-                                </td>
-                                <?php }else{?>
-                                <strong><td class="text-success">Anda Sudah checkout!</td></strong>
-                                <?php }?>
-                            </tr>  
-                            <?php }}else{ ?>
-							<tr>
-								<td colspan="9" class="text-danger">Anda belom memiliki history pemesanan!</td>
-							</tr>
-
-				            <?php } ?>
-                        </tbody>
-                        </table>
-                    </div>
-                </div>
+                                    <?php }else{?>
+                                    <strong><p class="text-success d-block">Anda Sudah checkout!</p></strong>
+                                    <div class="mb-1">
+                                        <p>Anda berhasil melakukan checkout pemesanan tiket parawisata, Untuk tahap berikutnya silahkan lakukan pembayaran di <strong> Bank BNI di No Rek : 00345463452</strong> sebesar : <strong>Rp. <?php echo number_format($his['total_harga']) ?></strong> . Dan silahkan upload bukti pembayaran Anda!</p>
+                                    </div>
+                                    <!-- Form Input Bukti Pembayaran -->
+                                    <div class="mb-2">
+                                        <form action="" method="post">
+                                            <input type="hidden" name="id_user" value="<?php echo $id_user ?>">
+                                            <input type="hidden" name="id_parawisata" value="<?php echo $his['id_parawisata'] ?>">
+                                            <label for="gambar"><strong>Uplaod bukti pembayaran Anda disini</strong></label>
+                                            <div class="col-lg-6">
+                                            <input type="file" id="gambar" class="form-control" name="gambar" required>
+                                            </div>
+                                            <button type="submit" name="bukti" class="btn btn-primary btn-sm mt-2">Kirim</button>
+                                        </form>
+                                    </div>
+                                    <!-- End Form -->
+                                    <hr>
+                                    <br><br><br>
+                                    <?php }?>
+                                    <?php }}else{ ?>
+								    <p class="text-danger d-block">Anda belom memiliki history pemesanan!</p>
+				                    <?php } ?>
+                                </div>
+                                </div>
             </div>
            
       </div><br><br>

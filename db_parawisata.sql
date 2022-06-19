@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 15, 2022 at 05:12 PM
+-- Generation Time: Jun 19, 2022 at 07:21 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -45,6 +45,19 @@ INSERT INTO `tb_admin` (`id_admin`, `username`, `alamat`, `no_handphone`, `passw
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tb_bukti_pembayaran`
+--
+
+CREATE TABLE `tb_bukti_pembayaran` (
+  `id_bukti_pembayaran` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `id_parawista` int(11) NOT NULL,
+  `gambar` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tb_coment`
 --
 
@@ -59,7 +72,9 @@ CREATE TABLE `tb_coment` (
 --
 
 INSERT INTO `tb_coment` (`id_coment`, `id_parawisata`, `coment`) VALUES
-(4, 8, 'Keren Sekali');
+(4, 8, 'Keren Sekali'),
+(19, 8, 'Keren Cokk'),
+(20, 9, 'Tempatnya Menyenangkan');
 
 -- --------------------------------------------------------
 
@@ -101,7 +116,8 @@ CREATE TABLE `tb_penilaian` (
 --
 
 INSERT INTO `tb_penilaian` (`id_penilaian`, `id_parawisata`, `nilai`) VALUES
-(3, 9, '90');
+(3, 9, '90'),
+(8, 9, '30');
 
 -- --------------------------------------------------------
 
@@ -124,8 +140,8 @@ CREATE TABLE `tb_pesanan` (
 --
 
 INSERT INTO `tb_pesanan` (`id_pesanan`, `id_parawisata`, `id_user`, `jumlah_pesan`, `tanggal_pesanan`, `total_harga`, `status`) VALUES
-(6, 8, 1, 3, '2022-06-13', 750000, '1'),
-(7, 9, 1, 1, '2022-06-13', 200000, '0');
+(9, 8, 1, 2, '2022-06-19', 500000, '1'),
+(10, 9, 1, 1, '2022-06-19', 200000, '0');
 
 -- --------------------------------------------------------
 
@@ -157,6 +173,14 @@ INSERT INTO `tb_user` (`id_user`, `username`, `alamat`, `no_handphone`, `passwor
 --
 ALTER TABLE `tb_admin`
   ADD PRIMARY KEY (`id_admin`);
+
+--
+-- Indexes for table `tb_bukti_pembayaran`
+--
+ALTER TABLE `tb_bukti_pembayaran`
+  ADD PRIMARY KEY (`id_bukti_pembayaran`),
+  ADD KEY `id_user` (`id_user`),
+  ADD KEY `id_parawista` (`id_parawista`);
 
 --
 -- Indexes for table `tb_coment`
@@ -203,10 +227,16 @@ ALTER TABLE `tb_admin`
   MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `tb_bukti_pembayaran`
+--
+ALTER TABLE `tb_bukti_pembayaran`
+  MODIFY `id_bukti_pembayaran` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `tb_coment`
 --
 ALTER TABLE `tb_coment`
-  MODIFY `id_coment` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_coment` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `tb_parawisata`
@@ -218,13 +248,13 @@ ALTER TABLE `tb_parawisata`
 -- AUTO_INCREMENT for table `tb_penilaian`
 --
 ALTER TABLE `tb_penilaian`
-  MODIFY `id_penilaian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_penilaian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tb_pesanan`
 --
 ALTER TABLE `tb_pesanan`
-  MODIFY `id_pesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_pesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `tb_user`
@@ -235,6 +265,13 @@ ALTER TABLE `tb_user`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `tb_bukti_pembayaran`
+--
+ALTER TABLE `tb_bukti_pembayaran`
+  ADD CONSTRAINT `tb_bukti_pembayaran_ibfk_1` FOREIGN KEY (`id_parawista`) REFERENCES `tb_parawisata` (`id_parawisata`),
+  ADD CONSTRAINT `tb_bukti_pembayaran_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `tb_user` (`id_user`);
 
 --
 -- Constraints for table `tb_coment`
